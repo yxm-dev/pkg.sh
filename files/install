@@ -1,0 +1,78 @@
+#! /bin/bash
+
+# including the pkgfile
+    pkgfile_dir=$(cd ../ && pwd)
+    source $pkgfile_dir/pkgfile
+
+# defining the installation directory
+    echo "Welcome to the installation of the package \"$PKG_name\"."
+    printf "\nWhere do you want to install it? \nThe default location is \"$HOME/.config/$PKG_name\". To set it, just hit enter.\n"
+    read -r -e -p "> " install_dir
+    if [[ -z $install_dir ]]; then
+        install_dir=$HOME/.config/$PKG_name
+    else
+        install_dir=$install_dir
+    fi
+    echo "Ok. It will be installed in \"$install_dir\"."
+
+# identifying the Linux distribution
+    echo "Identifying the Linux distribution..."
+    distro_name=$(source /etc/os-release && echo $NAME)
+
+# checking if it is in the pkgfile
+    for i in ${PKG_distros[@]}; do
+        PKG_distro_name_ckeck="$(grep -R "$i" /etc/os-release)"
+        if [[ -z $distro_name_check ]]; then
+            PKG_distro_name=""
+        else 
+            PKG_distro_name=$i
+        fi
+    done
+    if [[ -z $PKG_distro_name ]]; then
+        echo "\"$distro_name\" was identified as the current Linux distribution. Unfortunately, it is not configured in the pkgfile. The dependencies must be installed manually."
+    else
+        echo "\"$PKG_distro_name\" was identified as the Linux distribution..."
+    fi
+
+# cheking for dependencies
+    echo "Checking for dependencies..."
+    declare -A missing 
+    for j in ${PKG_dependencies[@]}; do
+        echo "Checking for \"$j\"..."
+        if [[ -x "$(command -v $j)" ]]; then
+            echo "OK"
+        else
+            echo "Dependency \"$j\" is missing..."
+            missing[$j]=$j
+        fi
+    done
+
+# installing missing dependencies
+    if [[ -z ${missing[@]} ]]; then
+        echo "All dependencies are already installed..."
+    else 
+        echo "Installing missing dependencies..."
+        for j in ${PKG_dependencies[@]}; do
+            echo "Installing dependency \"$j\""
+            command ${PKG_install_commands[$j,$PKG_distro_name]}
+        done
+    fi
+    echo "Dependencies have been installed."
+    
+# installing
+    starting_dir=$(cd ../ && pwd)
+    echo "Copying the files from \"$starting_dir\" to \"$install_dir\"..."
+    sudo cp -r $starting_dir $install_dir
+    
+    echo "Configuring the structural files..."
+    structural_files=$(find $install_dir -type f)
+    for f in ${structural_files[@]}; do
+        sed -i '3i install_dir=$install_dir' $f
+    done
+
+    echo "Concluding the installation..."
+    printf "if [[ -f $install_dir/$PKG_name.sh ]]; then \nsource $install_dir/$PKG_name.sh \nfi" >> $HOME/.bashrc
+    
+    printf "\nThe installation of the package \"$PKG_name\"  was finished:\n* Try \"$PKG_name --help\" to get more information on its usage.\n* To uninstall use \"$PKG_name --uninstall\".\n"
+
+

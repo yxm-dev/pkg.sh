@@ -1,0 +1,33 @@
+#! /bin/bash
+
+# BASICS
+## complete with the name of the package to be created
+    PKG_name=""
+    PKG_dir=""
+
+# DEPENDENCIES
+## complete with the array with the name of the dependencies
+### example: PKG_dependencies=(bc wget)
+    declare -a PKG_dependencies
+    PKG_dependencies=() 
+
+## complete the array with the base linux distributions in which you want to install the dependencies
+### example: PKG_distros=(Arch Debian Fedora)
+    declare -a PKG_distros
+    PKG_distros=()
+
+## complete with the 2D array of commands to install the dependencies in each distribution
+### example: PKG_install_commands[bc,Arch]="pacman -S bc"
+###          PKG_install_commands[bc,Debian]="apt-get install bc"
+    declare -A PKG_install_commands
+    PKG_install_commands[,]=
+
+## similarly, complete the 2D attay of commands to uninstall the dependencies
+### example: PKG_uninstall_commands[bc,Arch]="pacman -R bc"
+###          PKG_uninstall_commands_commands[bc,Debian]="apt-get remove bc"
+    declare -A PKG_uninstall_commands
+    PKG_uninstall_commands[,]=
+
+
+
+
