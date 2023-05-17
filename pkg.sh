@@ -1,9 +1,7 @@
 #! /bin/bash
 
 installdir=$HOME/.config/pkg.sh
-
     function pkg(){
-
         function pkg_build(){
             echo "Creating base directories..."
             mkdir $2
