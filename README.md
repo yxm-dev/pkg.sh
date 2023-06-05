@@ -1,3 +1,6 @@
+About
+=======
+
 [pkg.sh](https://github.com/yxm-dev/pkg.sh) is a simple package builder written in pure shell and aimed to
 provide standardization to pure bash projects, with configurations prescribed in a `pkgfile`.
 
