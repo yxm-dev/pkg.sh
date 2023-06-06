@@ -1,6 +1,6 @@
 #! /bin/bash
 
-installdir=$HOME/.config/pkg.sh
+install_dir=$HOME/.config/pkg.sh
     function pkg(){
         function pkg_build(){
             echo "Creating base directories..."
@@ -16,12 +16,12 @@ installdir=$HOME/.config/pkg.sh
             touch $2/config/help
             touch $2/$1
             echo "Configuring the base files..."
-            cat $installdir/files/install >> $2/install/install
-            cat $installdir/files/uninstall >> $2/install/uninstall
-            cat $installdir/files/configure >> $2/install/configure
-            cat $installdir/files/config >> $2/config/config
-            cat $installdir/files/help >> $2/config/help
-            cat $installdir/files/base >> $2/$1
+            cat $install_dir/files/install >> $2/install/install
+            cat $install_dir/files/uninstall >> $2/install/uninstall
+            cat $install_dir/files/configure >> $2/install/configure
+            cat $install_dir/files/config >> $2/config/config
+            cat $install_dir/files/help >> $2/config/help
+            cat $install_dir/files/base >> $2/$1
             echo "Configuring files to be executable..."
             chmod a+x $2/install/install
             chmod a+x $2/install/uninstall
@@ -60,7 +60,7 @@ installdir=$HOME/.config/pkg.sh
         fi
     elif [[ "$1" == "-t" ]] || [[ "$1" == "-tpl" ]] || [[ "$1" == "--template" ]]; then
         echo "Copying a template for the \"pkgfile\"..."
-            cp -r $installdir/pkgfile $PWD
+            cp -r $install_dir/pkgfile $PWD
         echo "Done."
     elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
         echo "displaying help..."
