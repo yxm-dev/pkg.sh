@@ -1,6 +1,7 @@
 #! /bin/bash
 
 install_dir=$HOME/.config/pkg.sh
+
     function pkg(){
         function pkg_build(){
             echo "Creating base directories..."
@@ -14,18 +15,21 @@ install_dir=$HOME/.config/pkg.sh
             touch $2/install/configure
             touch $2/config/config
             touch $2/config/help
+            touch $2/files/interactive
             touch $2/$1
             echo "Configuring the base files..."
             cat $install_dir/files/install >> $2/install/install
             cat $install_dir/files/uninstall >> $2/install/uninstall
             cat $install_dir/files/configure >> $2/install/configure
-            cat $install_dir/files/config >> $2/config/config
+            cat $install_dir/config/config >> $2/files/config
             cat $install_dir/files/help >> $2/config/help
             cat $install_dir/files/base >> $2/$1
             echo "Configuring files to be executable..."
             chmod a+x $2/install/install
             chmod a+x $2/install/uninstall
             chmod a+x $2/install/configure
+            chmod a+x $2/config/config
+            chmod a+x $2/files/config
             chmod a+x $2/$1
             echo "Copying the pkgfile..."
         }

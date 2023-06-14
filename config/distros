@@ -1,0 +1,48 @@
+#! /bin/bash
+
+declare -a pkg_distros
+
+PKG_distros[0]="Debian"
+PKG_distros[1]="Ubuntu"
+PKG_distros[2]="Linux Mint"
+PKG_distros[3]="Elementary OS"
+PKG_distros[4]="Zorin OS"
+PKG_distros[5]="Kali Linux"
+PKG_distros[7]="Arch Linux"
+PKG_distros[8]="Manjaro"
+PKG_distros[9]="Red Hat"
+PKG_distros[6]="Fedora"
+PKG_distros[10]="CentOS"
+PKG_distros[11]="openSUSE"
+
+declare -A PKG_distros_install_command 
+
+PKG_distros_install_command["Debian"]="sudo apt-get install" 
+PKG_distros_install_command["Ubuntu"]="sudo apt-get install"
+PKG_distros_install_command["Linux Mint"]="sudo apt-get install"
+PKG_distros_install_command["Elementary OS"]="sudo apt-get install"
+PKG_distros_install_command["Zorin OS"]="sudo apt-get install"
+PKG_distros_install_command["Kali Linux"]="sudo apt-get install"
+PKG_distros_install_command["Arch Linux"]="sudo pacman -S"
+PKG_distros_install_command["Manjaro"]="sudo pacman -S"
+PKG_distros_install_command["Red Hat"]="sudo dnf install"
+PKG_distros_install_command["Fedora"]="sudo dnf install"
+PKG_distros_install_command["CentOS"]="sudo dnf install"
+PKG_distros_install_command["openSUSE"]="sudo zypper install"
+
+declare -A PKG_distros_uninstall_command 
+
+PKG_distros_uninstall_command["Debian"]="sudo apt-get remove" 
+PKG_distros_uninstall_command["Ubuntu"]="sudo apt-get remove"
+PKG_distros_uninstall_command["Linux Mint"]="sudo apt-get remove"
+PKG_distros_uninstall_command["Elementary OS"]="sudo apt-get remove"
+PKG_distros_uninstall_command["Zorin OS"]="sudo apt-get remove"
+PKG_distros_uninstall_command["Kali Linux"]="sudo apt-get remove"
+PKG_distros_uninstall_command["Arch Linux"]="sudo pacman -R"
+PKG_distros_uninstall_command["Manjaro"]="sudo pacman -R"
+PKG_distros_uninstall_command["Red Hat"]="sudo dnf remove"
+PKG_distros_uninstall_command["Fedora"]="sudo dnf remove"
+PKG_distros_uninstall_command["CentOS"]="sudo dnf remove"
+PKG_distros_uninstall_command["openSUSE"]="sudo zypper remove"
+
+

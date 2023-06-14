@@ -1,0 +1,29 @@
+#! /bin/bash
+
+
+# include
+    source $install_dir/files/pkgfile
+
+# MAIN FUNCTION
+    function $PKG_name(){
+## without options enter in the interactive mode
+        if  [[ -z "$1" ]]; then
+            sh $install_dir/files/interactive
+## "-c", -"cfg" and "--config" options to enter in the configuration mode
+        elif ([[ "$1" == "-c" ]] || 
+              [[ "$1" == "-cfg" ]] || 
+              [[ "$1" == "--config" ]]) &&
+              [[ -z "$2" ]]; then
+            sh $install_dir/config/config
+## "-h" and "--help" options to print help
+        elif ([[ "$1" == "-h" ]] || 
+              [[ "$1" == "--help" ]]) &&
+              [[ -z "$2" ]]; then
+            cat $install_dir/files/help
+## "-u" and "--uninstall" options to execute uninstall script
+        elif [[ "$1" == "-u" ]] || [[ "$1" == "--uninstall" ]]; then
+            sh  $install_dir/install/uninstall
+## (your additional code ...)
+        fi
+    }
+   

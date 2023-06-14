@@ -1,33 +1,50 @@
 #! /bin/bash
 
 # BASICS
-## complete with the name of the package to be created
+## complete the strings with the "name" and "dir" of the package to be created
+## EXAMPLE: 
+##  PKG_name="my_package"
+##  PKG_dir="my/dir"
+
     PKG_name=""
     PKG_dir=""
 
 # DEPENDENCIES
 ## complete with the array with the name of the dependencies
-### example: PKG_dependencies=(bc wget)
+## EXAMPLE: 
+##  PKG_dependencies=(pkg_1 pkg_2)
+
     declare -a PKG_dependencies
-    PKG_dependencies=() 
+    PKG_dependencies=()
 
-## complete the array with the base linux distributions in which you want to install the dependencies
-### example: PKG_distros=(Arch Debian Fedora)
-    declare -a PKG_distros
-    PKG_distros=()
+## complete with "yes" or "no" for each distro in which you want to configure the installation of your package.
+## OBS: leaving in blank implies in using the default configuration
+## EXAMPLE: 
+##  PKG_distro_include["Debian"]="yes"
 
-## complete with the 2D array of commands to install the dependencies in each distribution
-### example: PKG_install_commands[bc,Arch]="pacman -S bc"
-###          PKG_install_commands[bc,Debian]="apt-get install bc"
-    declare -A PKG_install_commands
-    PKG_install_commands[,]=
+    declare -A PKG_distro_include
 
-## similarly, complete the 2D attay of commands to uninstall the dependencies
-### example: PKG_uninstall_commands[bc,Arch]="pacman -R bc"
-###          PKG_uninstall_commands_commands[bc,Debian]="apt-get remove bc"
-    declare -A PKG_uninstall_commands
-    PKG_uninstall_commands[,]=
+    PKG_distro_include["Debian"]=""
+    PKG_distro_include["Ubuntu"]=""
+    PKG_distro_include["Linux Mint"]=""
+    PKG_distro_include["Elementary OS"]=""
+    PKG_distro_include["Zorin OS"]=""
+    PKG_distro_include["Kali Linux"]=""
+    PKG_distro_include["Arch Linux"]=""
+    PKG_distro_include["Manjaro"]=""
+    PKG_distro_include["Red Hat"]=""
+    PKG_distro_include["Fedora"]=""
+    PKG_distro_include["CentOS"]=""
+    PKG_distro_include["openSUSE"]=""
 
+## for each dependency in ${PKG_dependencies} and for each distro you marked with "yes", 
+## add the name of the package in that distro.
+## OBS: leaving in blank implies in using the name in ${PKG_dependencies} as default.
+## EXAMPLE:
+##  PKG_distro_package_name["Debian","pkg_1"]="package_1"
+##  PKG_distro_package_name["Debian","pkg_2"]="package_2"
+
+    declare -A PKG_distro_package_name
 
 
 

@@ -1,0 +1,22 @@
+#! /bin/bash
+
+# including the pkgfile
+    pkgfile_dir=$(cd ../ && pwd)
+    source $pkgfile_dir/pkgfile
+
+    echo "Welcome come to the configuration step in the installation of \"$PKG_name\"."
+    printf "\nWhere do you want to install it? \nThe default location is \"$HOME/.config/$PKG_name\". To set it, just hit enter.\n"
+    read -r -e -p "> " install_dir
+    if [[ -z $install_dir ]]; then
+        install_dir=$HOME/.config/$PKG_name
+    else
+        install_dir=$install_dir
+    fi
+    echo "Ok. It will be installed in \"$install_dir\"."
+    echo "Configuring the installation..."
+    PKG_base_files=$(find $pkgfile_dir -type f)
+    for file in ${PKG_base_files[@]}; do
+        sed -i "2i\\ \ninstall_dir=${install_dir}\n" $file
+    done
+    
+
