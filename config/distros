@@ -1,6 +1,6 @@
 #! /bin/bash
 
-declare -a pkg_distros
+declare -a PKG_distros
 
 PKG_distros[0]="Debian"
 PKG_distros[1]="Ubuntu"

@@ -1,13 +1,11 @@
 #! /bin/bash
 
 # BASICS
-## complete the strings with the "name" and "dir" of the package to be created
+## complete the string with the name of the package to be created
 ## EXAMPLE: 
 ##  PKG_name="my_package"
-##  PKG_dir="my/dir"
 
     PKG_name=""
-    PKG_dir=""
 
 # DEPENDENCIES
 ## complete with the array with the name of the dependencies

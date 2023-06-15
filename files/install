@@ -3,6 +3,7 @@
 # including the pkgfile
     pkgfile_dir=$(cd ../ && pwd)
     source $pkgfile_dir/pkgfile
+    source $pkgfile_dir/config/distros
 
 # auxiliary function: checking for dependencies
     function PKG_dependencies_check(){
@@ -10,7 +11,7 @@
     for dependency in ${PKG_dependencies[@]}; do
         echo "Checking for \"$dependency\"..."
         if [[ -x "$(command -v $dependency)" ]]; then
-            echo -e -n "* Ok...\n"
+            printf "Ok...\n"
         else
             echo -e -n "Dependency \"$dependency\" is missing...\n"
             PKG_missing_dependencies[$dependency]="$dependency"
@@ -24,82 +25,101 @@
         else 
             echo "Installing missing dependencies..."
             for dependency in ${PKG_missing_dependencies[@]}; do
-                echo "* Installing dependency \"$dependency\"...\n"
+                echo "Installing dependency \"$dependency\"...\n"
                 if [[ ! "${PKG_distro_package_name[$PKG_distro_name,$dependency]}" == "" ]]; then
                     command ${PKG_distros_install_commands[$PKG_distro_name]} ${PKG_distro_package_name[$PKG_distro_name,$dependency]}
                     if [[ -x "$(command -v ${PKG_distro_package_name[$PKG_distro_name,$dependency]})" ]]; then
                         echo "Dependency \"$dependency\" has been installed..."
                     else
-                        echo "Found an error. Dependency \"$dependency\" has NOT been installed..."
+                        echo "*ERROR* Dependency \"$dependency\" has NOT been installed..."
+                        exit 1
                     fi
                 else
                     command ${PKG_distros_install_commands[$PKG_distro_name]} $dependency
                     if [[ -x "$(command -v $dependency)" ]]; then
                         echo "Dependency \"$dependency\" has been installed..."
                     else
-                        echo "Found an error. Dependency \"$dependency\" has NOT been installed..."
+                        echo "*ERROR* Dependency \"$dependency\" has NOT been installed..."
+                        exit 1
                     fi
-s                fi
+                fi
             done
         fi 
     }
 # auxiliary function: installing the package
     function PKG_installing_package(){
-        PKG_starting_dir=$(cd ../ && pwd)
-        echo "Copying the files from \"$PKG_starting_dir\" to \"$install_dir\"..."
-        sudo cp -r $PKG_starting_dir $install_dir
+        if [[ -f "$install_dir/$PKG_name" ]]; then
+            echo "*ERROR* There already exists a file \"$install_dir/$PKG_name\". Change the package name in the pkgfile."
+            exit 1
+        elif [[ -d "$install_dir/$PKG_name" ]]; then
+            echo "*ERROR* There already exists a directory \"$install_dir/$PKG_name\". Change the package name in the pkgfile."
+            exit 1
+        else
+            PKG_starting_dir=$(cd ../ && pwd)
+            echo "Copying the files from \"$PKG_starting_dir\" to \"$install_dir\"..."
+            sudo cp -r $PKG_starting_dir $install_dir
     
-        echo "Configuring the structural files..."
-        structural_files=$(find $install_dir -type f)
-        for f in ${structural_files[@]}; do
-            sed -i '3i install_dir=$install_dir' $f
-        done
+            echo "Configuring \"$PKG_name.sh\" file..."
+            sed -i "s/PKG_name/$PKG_name/g" ${install_dir}/${PKG_name}.sh
+            
+            echo "Configuring the structural files..."
+            structural_files=$(find $install_dir -type f)
+            for f in ${structural_files[@]}; do
+                sed -i "3i install_dir=$install_dir" $f
+            done
 
-        echo "Concluding the installation..."
-        printf "if [[ -f $install_dir/$PKG_name.sh ]]; then \nsource $install_dir/$PKG_name.sh \nfi\n" >> $HOME/.bashrc
+            echo "Concluding the installation..."
+            printf "if [[ -f $install_dir/$PKG_name.sh ]]; then \nsource $install_dir/$PKG_name.sh \nfi\n" >> $HOME/.bashrc
+        fi
     }
 
 # INSTALLATION SCRIPT
-    echo "Welcome to the installation of the package \"$PKG_name\"."
+    printf "Welcome to the installation of the package \"$PKG_name\". \n\n"
     if [[ -z "$install_dir" ]]; then
-        echo "Installation directory not defined. Please, execute \"./configure\" first."
+        echo "*ERROR* Installation directory not defined. Please, execute \"./configure\" first."
     else
 ## identifying the Linux distribution
-        echo "Identifying current Linux distribution..."
+        printf "Identifying current Linux distribution...\n"
         distro_name=$(source /etc/os-release && echo $NAME)
-        echo "\"$distro_name\" was identified as the current Linux distribution."
+        printf "\"$distro_name\" was identified as the current Linux distribution...\n"
 ## checking if it is in the pkgfile
-        for distro in ${PKG_distros[@]}; do
-            PKG_distro_name_ckeck="$(grep -R "$distro" /etc/os-release)"
-            if [[ "${PKG_distro_include[$distro]}" == "yes" ]] ||
-               [[ "${PKG_distro_include[$distro]}" == "Y" ]] ||
-               [[ "${PKG_distro_include[$distro]}" == "YES" ]] ||
-               [[ "${PKG_distro_include[$distro]}" == "Y" ]] ||
-               [[ "${PKG_distro_include[$distro]}" == "Y" ]] ||
-               [[ "${PKG_distro_include[$distro]}" == "" ]] &&
-               [[ -n $PKG_distro_name_check ]]; then
-                PKG_distro_name="$distro"
+        for distro in "${PKG_distros[@]}"; do
+            name_check="$(grep -R "${distro}" /etc/os-release)"
+            if ([[ "${PKG_distro_include[${distro}]}" == "yes" ]] ||
+               [[ "${PKG_distro_include[${distro}]}" == "Y" ]] ||
+               [[ "${PKG_distro_include[${distro}]}" == "YES" ]] ||
+               [[ "${PKG_distro_include[${distro}]}" == "Y" ]] ||
+               [[ "${PKG_distro_include[${distro}]}" == "Y" ]] ||
+               [[ "${PKG_distro_include[${distro}]}" == "" ]]) &&
+               [[ -n ${name_check} ]]; then
+                PKG_distro_name="${distro}"
+                break
             else 
                 PKG_distro_name=""
             fi
         done
 
         if [[ -z $PKG_distro_name ]]; then
-            echo -e -n "Unfortunately, \"$distro_name\" is not configured in the pkgfile. Thus: \n* If missing, the dependencies must be installed manually.\n"
+            printf "\"$distro_name\" is not configured in the pkgfile. If missing, the dependencies must be installed manually.\n"
 ## checking for dependencies
             echo "Checking for dependencies..."
             PKG_dependencies_check
-            echo -e -n "The following dependences are missing and must be installed manually before the installation of \"$PKG_name\":\n"
-            for dependency in ${PKG_missing_dependencies[@]}; do
-                echo -e -n "\n* $dependency"
-            done
+            if [[ -z ${PKG_missing_dependencies[@]} ]]; then
+                echo "There is not dependencies..."
+                echo "Continuing with the installation..."
+                PKG_installing_package
+            else
+                echo -e -n "*ERROR* The following dependences are missing and must be installed manually before the installation of \"$PKG_name\":\n"
+                for dependency in ${PKG_missing_dependencies[@]}; do
+                    printf "* $dependency"
+                done
+                exit 1
+            fi
         else
             echo "\"$distro_name\" identified in the pkgfile..."
-## installing dependencies
             PKG_installing_dependencies
-## installing the package
             PKG_installing_package
-            printf "\nThe installation of the package \"$PKG_name\"  was finished:\n* Try \"$PKG_name --help\" to get more information on its usage.\n* To uninstall use \"$PKG_name --uninstall\".\n"
+            printf "\nThe installation of the package \"$PKG_name\"  was finished:\n* Try \"$PKG_name --help\" to get more information on its usage.\n* To uninstall it use \"$PKG_name --uninstall\" or execute the script \"$installdir/install/uninstall\".\n"
         fi
     fi
 

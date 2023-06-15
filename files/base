@@ -1,11 +1,10 @@
 #! /bin/bash
 
-
 # include
-    source $install_dir/files/pkgfile
+    source $install_dir/pkgfile
 
 # MAIN FUNCTION
-    function $PKG_name(){
+    function PKG_name(){
 ## without options enter in the interactive mode
         if  [[ -z "$1" ]]; then
             sh $install_dir/files/interactive
@@ -24,6 +23,8 @@
         elif [[ "$1" == "-u" ]] || [[ "$1" == "--uninstall" ]]; then
             sh  $install_dir/install/uninstall
 ## (your additional code ...)
+        else 
+            echo "Option not defined for the \"PKG_name\" function."
         fi
     }
    

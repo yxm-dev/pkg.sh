@@ -5,62 +5,64 @@ install_dir=$HOME/.config/pkg.sh
     function pkg(){
         function pkg_build(){
             echo "Creating base directories..."
-            mkdir $2
-            mkdir $2/install
-            mkdir $2/config
-            mkdir $2/files
-            echo "Creating base files..."
-            touch $2/install/install
-            touch $2/install/uninstall
-            touch $2/install/configure
-            touch $2/config/config
-            touch $2/config/help
-            touch $2/files/interactive
-            touch $2/$1
-            echo "Configuring the base files..."
-            cat $install_dir/files/install >> $2/install/install
-            cat $install_dir/files/uninstall >> $2/install/uninstall
-            cat $install_dir/files/configure >> $2/install/configure
-            cat $install_dir/config/config >> $2/files/config
-            cat $install_dir/files/help >> $2/config/help
-            cat $install_dir/files/base >> $2/$1
-            echo "Configuring files to be executable..."
-            chmod a+x $2/install/install
-            chmod a+x $2/install/uninstall
-            chmod a+x $2/install/configure
-            chmod a+x $2/config/config
-            chmod a+x $2/files/config
-            chmod a+x $2/$1
-            echo "Copying the pkgfile..."
+            if [[ -f "$1" ]]; then
+                echo "*ERROR* There alrealy exists a file \"$1\". Change the package name in the pkgfile."
+            elif [[ -d "$1" ]]; then
+                 echo "*ERROR* There alrealy exists a directory \"$1\". Change the package name in the pkgfile."
+            else
+                mkdir $1
+                mkdir $1/install
+                mkdir $1/config
+                mkdir $1/files
+                echo "Creating base files..."
+                touch $1/install/install
+                touch $1/install/uninstall
+                touch $1/install/configure
+                touch $1/config/config
+                touch $1/config/help
+                touch $1/files/interactive
+                touch $1/$1.sh
+                echo "Configuring base files..."
+                cat $install_dir/files/install >> $1/install/install
+                cat $install_dir/files/uninstall >> $1/install/uninstall
+                cat $install_dir/files/configure >> $1/install/configure
+                cat $install_dir/config/config >> $1/config/config
+                cat $install_dir/config/distros >> $1/config/distros
+                cat $install_dir/files/help >> $1/config/help
+                cat $install_dir/files/base >> $1/$1.sh
+                echo "Configuring files to be executable..."
+                chmod a+x $1/install/install
+                chmod a+x $1/install/uninstall
+                chmod a+x $1/install/configure
+                chmod a+x $1/config/config
+                chmod a+x $1/$1.sh
+                echo "Copying the pkgfile..."
+            fi
         }
     
     if [[ -z $1 ]]; then
         if [[ -f pkgfile ]]; then
             has_name=$(grep -R "PKG_name" "pkgfile")
-            has_dir=$(grep -R "PKG_dir" "pkgfile")
             given_name=$(source pkgfile && echo "$PKG_name")
-            given_dir=$(source pkgfile && echo "$PKG_dir")
-            if [[ -n $has_name ]] && [[ -n $has_dir ]]; then
-                echo "Creating the package \"$given_name\" in the directory \"$given_dir\"..."
-                pkg_build $given_name $given_dir
-                cp -r pkgfile $given_dir
-            else
+            if [[ -z $given_name ]] || [[ -z $has_name ]] ; then
                 echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name and dir."
+            else
+                echo "Creating the package \"$given_name\"..."
+                pkg_build $given_name
+                cp -r pkgfile $given_name
             fi
         else
             echo "\"pkgfile\" not found. Generate it with \"pkg --config\", or try a quick build. See \"pkg --help\"."
         fi
     elif [[ -f $1 ]]; then
         has_name=$(grep -R "PKG_name" "$1")
-        has_dir=$(grep -R "PKG_dir" "$1")
         given_name=$(source $1 && echo "$PKG_name")
-        given_dir=$(source $1 && echo "$PKG_dir")
-        if [[ -n $has_name ]] && [[ -n $has_dir ]]; then
-            echo "Creating the package \"$given_name\" in the directory \"$given_dir\"..."
-            pkg_build $given_name $given_dir
-            cp -r $1 $given_dir
-        else
+        if [[ -z $given_name ]] || [[ -z $has_dir ]]; then
             echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name and dir."
+        else
+            echo "Creating the package \"$given_name\"..."
+            pkg_build $given_name
+            cp -r $1 $given_name
         fi
     elif [[ "$1" == "-t" ]] || [[ "$1" == "-tpl" ]] || [[ "$1" == "--template" ]]; then
         echo "Copying a template for the \"pkgfile\"..."
