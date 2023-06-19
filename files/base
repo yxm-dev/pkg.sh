@@ -18,7 +18,7 @@
         elif ([[ "$1" == "-h" ]] || 
               [[ "$1" == "--help" ]]) &&
               [[ -z "$2" ]]; then
-            cat $install_dir/files/help
+            cat $install_dir/config/help.txt
 ## "-u" and "--uninstall" options to execute uninstall script
         elif [[ "$1" == "-u" ]] || [[ "$1" == "--uninstall" ]]; then
             sh  $install_dir/install/uninstall

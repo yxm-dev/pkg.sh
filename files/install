@@ -67,6 +67,7 @@
             for f in ${structural_files[@]}; do
                 sed -i "3i install_dir=$install_dir" $f
             done
+            sed -i "s/PKG_name/$PKG_name/g" ${install_dir}/config/help.txt
 
             echo "Concluding the installation..."
             printf "if [[ -f $install_dir/$PKG_name.sh ]]; then \nsource $install_dir/$PKG_name.sh \nfi\n" >> $HOME/.bashrc

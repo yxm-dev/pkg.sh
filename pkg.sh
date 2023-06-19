@@ -19,16 +19,16 @@ install_dir=$HOME/.config/pkg.sh
                 touch $1/install/uninstall
                 touch $1/install/configure
                 touch $1/config/config
-                touch $1/config/help
-                touch $1/files/interactive
+                touch $1/config/help.txt
+                touch $1/config/interactive
                 touch $1/$1.sh
                 echo "Configuring base files..."
                 cat $install_dir/files/install >> $1/install/install
                 cat $install_dir/files/uninstall >> $1/install/uninstall
                 cat $install_dir/files/configure >> $1/install/configure
-                cat $install_dir/config/config >> $1/config/config
-                cat $install_dir/config/distros >> $1/config/distros
-                cat $install_dir/files/help >> $1/config/help
+                cat $install_dir/files/config >> $1/config/config
+                cat $install_dir/files/distros >> $1/config/distros
+                cat $install_dir/files/help.txt >> $1/config/help.txt
                 cat $install_dir/files/base >> $1/$1.sh
                 echo "Configuring files to be executable..."
                 chmod a+x $1/install/install
