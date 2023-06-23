@@ -1,0 +1,38 @@
+#! /bin/bash 
+
+PKG_name="dsa"
+
+declare -A PKG_distro_include
+
+PKG_distro_include["Debian"]="yes"
+PKG_distro_include["Ubuntu"]="yes"
+PKG_distro_include["Linux Mint"]="yes"
+PKG_distro_include["Elementary OS"]="yes"
+PKG_distro_include["Zorin OS"]="yes"
+PKG_distro_include["Kali Linux"]="yes"
+PKG_distro_include["Arch Linux"]="yes"
+PKG_distro_include["Manjaro"]="yes"
+PKG_distro_include["Red Hat"]="yes"
+PKG_distro_include["Fedora"]="yes"
+PKG_distro_include["CentOS"]="yes"
+PKG_distro_include["openSUSE"]="yes"
+
+
+declare -a PKG_dependencies
+
+PKG_dependencies=(d)
+
+PKG_distro_package_name["Debian", "d"]="asd"
+PKG_distro_package_name["Ubuntu", "d"]="asd"
+PKG_distro_package_name["Linux Mint", "d"]="asd"
+PKG_distro_package_name["Elementary OS", "d"]="asd"
+PKG_distro_package_name["Zorin OS", "d"]="asd"
+PKG_distro_package_name["Kali Linux", "d"]="asd"
+PKG_distro_package_name["Arch Linux", "d"]="as"
+PKG_distro_package_name["Manjaro", "d"]="as"
+PKG_distro_package_name["Red Hat", "d"]="das"
+PKG_distro_package_name["Fedora", "d"]="das"
+PKG_distro_package_name["CentOS", "d"]="das"
+PKG_distro_package_name["openSUSE", "d"]=""
+
+

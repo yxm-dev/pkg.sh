@@ -1,7 +1,5 @@
 #! /bin/bash
 
-install_dir=$HOME/.config/pkg.sh
-
     function pkg(){
         function pkg_build(){
             echo "Creating base directories..."
@@ -23,13 +21,13 @@ install_dir=$HOME/.config/pkg.sh
                 touch $1/config/interactive
                 touch $1/$1.sh
                 echo "Configuring base files..."
-                cat $install_dir/files/install >> $1/install/install
-                cat $install_dir/files/uninstall >> $1/install/uninstall
-                cat $install_dir/files/configure >> $1/install/configure
-                cat $install_dir/files/config >> $1/config/config
-                cat $install_dir/files/distros >> $1/config/distros
-                cat $install_dir/files/help.txt >> $1/config/help.txt
-                cat $install_dir/files/base >> $1/$1.sh
+                cat $PKG_install_dir/files/install >> $1/install/install
+                cat $PKG_install_dir/files/uninstall >> $1/install/uninstall
+                cat $PKG_install_dir/files/configure >> $1/install/configure
+                cat $PKG_install_dir/files/config >> $1/config/config
+                cat $PKG_install_dir/files/distros >> $1/config/distros
+                cat $PKG_install_dir/files/help.txt >> $1/config/help.txt
+                cat $PKG_install_dir/files/base >> $1/$1.sh
                 echo "Configuring files to be executable..."
                 chmod a+x $1/install/install
                 chmod a+x $1/install/uninstall
@@ -66,11 +64,16 @@ install_dir=$HOME/.config/pkg.sh
         fi
     elif [[ "$1" == "-t" ]] || [[ "$1" == "-tpl" ]] || [[ "$1" == "--template" ]]; then
         echo "Copying a template for the \"pkgfile\"..."
-            cp -r $install_dir/pkgfile $PWD
+            cp -r $PKG_install_dir/pkgfile $PWD
         echo "Done."
     elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-        echo "displaying help..."
+        cat $PKG_install_dir/config/help.txt
 
+    elif [[ "$1" == "-c" ]] || [[ "$1" == "-cfg" ]] || [[ "$1" == "--config" ]] ||
+         [[ "$1" == "-pkgfile" ]] || [[ "$1" == "--pkgfile" ]]; then
+         sh $PKG_install_dir/config/config
+         mv $PKG_install_dir/config/ui/pkgfile $PWD
+        
     else
         echo "Please provide a valid path to a pkgfile."
     fi

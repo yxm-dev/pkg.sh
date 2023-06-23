@@ -1,0 +1,14 @@
+#! /bin/bash
+
+if [[ -d "$PKG_install_dir" ]]; then
+    echo "*ERROR* There already exists a directory \"$PKG_install_dir\"."
+    exit 1
+else
+    PKG_starting_dir=$(cd ../ && pwd)
+    echo "Copying the files from \"$PKG_starting_dir\" to \"$PKG_install_dir\"..."
+    sudo cp -r $PKG_starting_dir $PKG_install_dir
+
+    echo "Concluding the installation..."
+    printf "if [[ -f $PKG_install_dir ]]; then \nsource $PKG_install_dir \nfi\n" >> $HOME/.bashrc
+fi
+

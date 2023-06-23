@@ -62,11 +62,7 @@
             echo "Configuring \"$PKG_name.sh\" file..."
             sed -i "s/PKG_name/$PKG_name/g" ${install_dir}/${PKG_name}.sh
             
-            echo "Configuring the structural files..."
-            structural_files=$(find $install_dir -type f)
-            for f in ${structural_files[@]}; do
-                sed -i "3i install_dir=$install_dir" $f
-            done
+            echo "Configuring the help.txt file..."
             sed -i "s/PKG_name/$PKG_name/g" ${install_dir}/config/help.txt
 
             echo "Concluding the installation..."

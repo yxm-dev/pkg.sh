@@ -1,5 +1,3 @@
-PKG_name application.
-
 usage: PKG_name [options] [arguments] (general case)
    or: PKG_name                       (interactive mode)
 

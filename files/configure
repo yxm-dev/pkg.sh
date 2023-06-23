@@ -14,7 +14,7 @@
     fi
     echo "Ok. It will be installed in \"$install_dir\"."
     echo "Configuring the installation..."
-    PKG_base_files=$(find $pkgfile_dir -type f)
+    PKG_base_files=$(find $pkgfile_dir -type f ! -name help.txt)
     for file in ${PKG_base_files[@]}; do
         sed -i "2i\\ \ninstall_dir=${install_dir}\n" $file
     done
