@@ -1,22 +1,29 @@
 About
 =======
 
-[pkg.sh](https://github.com/yxm-dev/pkg.sh) is a simple package builder written in pure shell and aimed to
-provide standardization to pure bash projects, with configurations prescribed in a `pkgfile` in the same
-spirit of `GNU make`.
+[pkg.sh](https://github.com/yxm-dev/pkg.sh) is a simple package builder written in pure shell and
+aimed to provide standardization to [bash](https://www.gnu.org/software/bash/) projects, in the same lines of [GNU make](https://www.gnu.org/software/make/). 
+Here, the `makefile` is replaced with a `pkgfile`, where the new package name and its dependencies are
+provided. The build process is organized in the archetypal `./configure`  and `./install` steps. 
 
-The packages created with [pkg.sh](https://github.com/yxm-dev/pkg.sh) comes with `install` and`unistall`
-scripts that install/uninstall the needed dependencies (defined in the `pkgfile`). The uninstall process fully
-remove the package and the installed dependencies.
+The `pkgfile` file can be created manually (where a template is provided) or, optionally,
+through a TUI interface written in [Go](https://go.dev/) with the help of the
+[tview](https://github.com/rivo/tview) library.
 
-The `pkgfile` file can be created manually (a template is provided with `pkg --template`) or, optionally,
-through a TUI interface written in `Go`, accessed with `pkg --pkgfile`. 
+For more details, visit the [project website]().
+
+Why?
+=====
+
+* to replace the use of [GNU make](https://www.gnu.org/software/make/) for the case of simple
+projects, avoiding additional dependences and still providing standardization;
+* to provide a package builders designed for [bash](https://www.gnu.org/software/bash/) applications.
 
 Dependencies
 =============
 
-* `Bash` and `sed` for general usage
-* `Go` for the TUI interface (it can be automatically installed from `pkg --pkgfile`).
+* [bash](https://www.gnu.org/software/bash/) and [sed](https://www.gnu.org/software/sed/) for general use
+* [Go](https://go.dev/) for the TUI interface (optional)
 
 Install
 ========
@@ -28,14 +35,21 @@ Install
 
 ```
 
-2. enter in the `install` directory
+2. Enter in the `install` directory
 
 ```bash
     cd pkg.sh/install
 ```
 
-3. execute `./configure` and select the installation directory
-4. execute `./install`
+3. Execute `./configure` and select the installation directory `PKG_install_dir`
+4. Execute `./install`
+
+* To uninstall, enter in the installation directory and execute the `uninstall` script:
+
+```bash
+    cd PKG_install_dir/install
+    ./uninstall
+```
 
 Usage
 ========
@@ -56,7 +70,6 @@ Usage
     ./install
 
 ```
-
 * In the `./configure` step you will fix the install directory `install_dir` of `PKG_name`. To
   uninstall the package (and optionally its dependencies), execute the `uninstall` in `install_dir`:
   
@@ -65,8 +78,9 @@ Usage
     ./uninstall
 ```
 
+To Do
+===========
 
-
-
-
+* improve the error messages in the TUI interface;
+* change the focus of dependencies from distributions to package managers;
 
