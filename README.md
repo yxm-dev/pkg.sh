@@ -10,7 +10,7 @@ The `pkgfile` file can be created manually (where a template is provided) or, op
 through a TUI interface written in [Go](https://go.dev/) with the help of the
 [tview](https://github.com/rivo/tview) library.
 
-For more details, visit the [project website]().
+For more details, visit the [project website](http://yxm-atip.s3-website-sa-east-1.amazonaws.com/).
 
 Why?
 =====
