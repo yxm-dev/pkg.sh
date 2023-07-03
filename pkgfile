@@ -19,10 +19,15 @@
 ## OBS: leaving in blank implies in using the default configuration
 ## EXAMPLE: 
 ##  PKG_distro_include["Debian"]="yes"
+<<<<<<< HEAD
+=======
+## ...
+>>>>>>> e605667 (...)
 
     declare -A PKG_distro_include
 
     PKG_distro_include["Debian"]=""
+<<<<<<< HEAD
     PKG_distro_include["Ubuntu"]=""
     PKG_distro_include["Linux Mint"]=""
     PKG_distro_include["Elementary OS"]=""
@@ -33,14 +38,26 @@
     PKG_distro_include["Red Hat"]=""
     PKG_distro_include["Fedora"]=""
     PKG_distro_include["CentOS"]=""
+=======
+    PKG_distro_include["Arch"]=""
+    PKG_distro_include["RedHat"]=""
+>>>>>>> e605667 (...)
     PKG_distro_include["openSUSE"]=""
 
 ## for each dependency in ${PKG_dependencies} and for each distro you marked with "yes", 
 ## add the name of the package in that distro.
 ## OBS: leaving in blank implies in using the name in ${PKG_dependencies} as default.
 ## EXAMPLE:
+<<<<<<< HEAD
 ##  PKG_distro_package_name["Debian","pkg_1"]="package_1"
 ##  PKG_distro_package_name["Debian","pkg_2"]="package_2"
+=======
+##  PKG_distro_package_name["Debian","pkg_1"]="pkg_1_Debian"
+##  PKG_distro_package_name["Debian","pkg_2"]="pkg_2_Debian"
+##  PKG_distro_package_name["Arch","pkg_1"]="pkg_1_Arch"
+##  PKG_distro_package_name["Arch","pkg_2"]="pkg_2_Arch"
+## ...
+>>>>>>> e605667 (...)
 
     declare -A PKG_distro_package_name
 
