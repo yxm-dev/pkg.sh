@@ -11,37 +11,12 @@ import (
 
 // // INPUT // //
 
-<<<<<<< HEAD
-var distrosDebian = []string{
-	"Debian",
-	"Ubuntu",
-	"Linux Mint",
-	"Elementary OS",
-	"Zorin OS",
-	"Kali Linux",
-}
-var distrosArch = []string{
-	"Arch Linux",
-	"Manjaro",
-}
-var distrosRedHat = []string{
-	"Red Hat",
-	"Fedora",
-	"CentOS",
-}
-var distrosSUSE = []string{"openSUSE"}
-
-var distrosDebianArch = append(distrosDebian, distrosArch...)
-var distrosDebianArchRedHat = append(distrosDebianArch, distrosRedHat...)
-var distros = append(distrosDebianArchRedHat, distrosSUSE...)
-=======
 var distros = []string{
 	"Debian",
 	"Arch",
 	"RedHat",
 	"openSUSE",
 }
->>>>>>> e605667 (...)
 
 // // VARIABLES // //
 var app *tview.Application
@@ -49,14 +24,7 @@ var err error
 var packageName string
 var debian string
 var dependencyName string
-<<<<<<< HEAD
-var commandDebian string
-var commandArch string
-var commandRedHat string
-var commandSUSE string
-=======
 var commandDistros string
->>>>>>> e605667 (...)
 
 var txtIntro string
 var bodyIntro *tview.TextView
@@ -226,89 +194,15 @@ func createDependenciesDistrosPkgfile() {
 	}
 }
 
-<<<<<<< HEAD
-// append "pkgfile_dependencies_distros" with the command of the package in:
-// // Debian based distros
-func appendDependenciesDistrosPkgfileDebian(name, command string) {
-=======
 // append "pkgfile_dependencies_distros" with the command of the package in the distros:
 
 func appendDependenciesDistrosPkgfile(name, command string) {
->>>>>>> e605667 (...)
 	file, err := os.OpenFile("pkgfile_dependencies_distros", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 
-<<<<<<< HEAD
-	var commandDebian string
-
-	for _, distro := range distrosDebian {
-		commandDebian = commandDebian +
-			"PKG_distro_package_name[\"" + distro + "\", \"" + name + "\"]=\"" + command + "\"\n"
-	}
-
-	commandDebianByte := []byte(commandDebian)
-	file.Write(commandDebianByte)
-}
-
-// // Arch based distros
-func appendDependenciesDistrosPkgfileArch(name, command string) {
-	file, err := os.OpenFile("pkgfile_dependencies_distros", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	var commandArch string
-
-	for _, distro := range distrosArch {
-		commandArch = commandArch +
-			"PKG_distro_package_name[\"" + distro + "\", \"" + name + "\"]=\"" + command + "\"\n"
-	}
-
-	commandArchByte := []byte(commandArch)
-	file.Write(commandArchByte)
-}
-
-// // Red Hat based distros
-func appendDependenciesDistrosPkgfileRedHat(name, command string) {
-	file, err := os.OpenFile("pkgfile_dependencies_distros", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	var commandRedHat string
-
-	for _, distro := range distrosRedHat {
-		commandRedHat = commandRedHat +
-			"PKG_distro_package_name[\"" + distro + "\", \"" + name + "\"]=\"" + command + "\"\n"
-	}
-
-	commandRedHatByte := []byte(commandRedHat)
-	file.Write(commandRedHatByte)
-}
-
-// // SUSE based distros
-func appendDependenciesDistrosPkgfileSUSE(name, command string) {
-	file, err := os.OpenFile("pkgfile_dependencies_distros", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	var commandSUSE string
-
-	for _, distro := range distrosSUSE {
-		commandSUSE = commandSUSE +
-			"PKG_distro_package_name[\"" + distro + "\", \"" + name + "\"]=\"" + command + "\"\n"
-	}
-
-	commandSUSEByte := []byte(commandSUSE)
-	file.Write(commandSUSEByte)
-=======
 	var commandDistros string
 
 	for _, distro := range distros {
@@ -318,7 +212,6 @@ func appendDependenciesDistrosPkgfileSUSE(name, command string) {
 
 	commandByte := []byte(commandDistros)
 	file.Write(commandByte)
->>>>>>> e605667 (...)
 }
 
 // create a form of the dependencies names and commands in distros.
@@ -342,23 +235,10 @@ func addDependency() {
 
 	bodyDependenciesAdd.AddButton("add other", func() {
 		dependencyName = bodyDependenciesAdd.GetFormItemByLabel(labels[0]).(*tview.InputField).GetText()
-<<<<<<< HEAD
-		commandDebian = bodyDependenciesAdd.GetFormItemByLabel(labels[1]).(*tview.InputField).GetText()
-		commandArch = bodyDependenciesAdd.GetFormItemByLabel(labels[2]).(*tview.InputField).GetText()
-		commandRedHat = bodyDependenciesAdd.GetFormItemByLabel(labels[3]).(*tview.InputField).GetText()
-		commandSUSE = bodyDependenciesAdd.GetFormItemByLabel(labels[4]).(*tview.InputField).GetText()
-
-		appendDependenciesPkgfile(dependencyName)
-		appendDependenciesDistrosPkgfileDebian(dependencyName, commandDebian)
-		appendDependenciesDistrosPkgfileArch(dependencyName, commandArch)
-		appendDependenciesDistrosPkgfileRedHat(dependencyName, commandRedHat)
-		appendDependenciesDistrosPkgfileSUSE(dependencyName, commandSUSE)
-=======
 		commandDistros = bodyDependenciesAdd.GetFormItemByLabel(labels[1]).(*tview.InputField).GetText()
 
 		appendDependenciesPkgfile(dependencyName)
 		appendDependenciesDistrosPkgfile(dependencyName, commandDistros)
->>>>>>> e605667 (...)
 
 		pages.SwitchToPage("Dependencies Intro")
 	}).
@@ -367,23 +247,10 @@ func addDependency() {
 
 	bodyDependenciesAdd.AddButton("conclude", func() {
 		dependencyName = bodyDependenciesAdd.GetFormItemByLabel(labels[0]).(*tview.InputField).GetText()
-<<<<<<< HEAD
-		commandDebian = bodyDependenciesAdd.GetFormItemByLabel(labels[1]).(*tview.InputField).GetText()
-		commandArch = bodyDependenciesAdd.GetFormItemByLabel(labels[2]).(*tview.InputField).GetText()
-		commandRedHat = bodyDependenciesAdd.GetFormItemByLabel(labels[3]).(*tview.InputField).GetText()
-		commandSUSE = bodyDependenciesAdd.GetFormItemByLabel(labels[4]).(*tview.InputField).GetText()
-
-		appendLastDependencyPkgfile(dependencyName)
-		appendDependenciesDistrosPkgfileDebian(dependencyName, commandDebian)
-		appendDependenciesDistrosPkgfileArch(dependencyName, commandArch)
-		appendDependenciesDistrosPkgfileRedHat(dependencyName, commandRedHat)
-		appendDependenciesDistrosPkgfileSUSE(dependencyName, commandSUSE)
-=======
 		commandDistros = bodyDependenciesAdd.GetFormItemByLabel(labels[1]).(*tview.InputField).GetText()
 
 		appendLastDependencyPkgfile(dependencyName)
 		appendDependenciesDistrosPkgfile(dependencyName, commandDistros)
->>>>>>> e605667 (...)
 
 		concludePkgfile()
 		deleteConcludePkgfile()

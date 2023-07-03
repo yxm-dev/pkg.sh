@@ -19,35 +19,21 @@
                 touch $1/config/config
                 touch $1/config/help.txt
                 touch $1/config/interactive
-<<<<<<< HEAD
-                touch $1/$1.sh
-=======
                 touch $1/$1
->>>>>>> e605667 (...)
                 echo "Configuring base files..."
                 cat $PKG_install_dir/files/install >> $1/install/install
                 cat $PKG_install_dir/files/uninstall >> $1/install/uninstall
                 cat $PKG_install_dir/files/configure >> $1/install/configure
                 cat $PKG_install_dir/files/config >> $1/config/config
-<<<<<<< HEAD
-                cat $PKG_install_dir/files/distros >> $1/config/distros
-                cat $PKG_install_dir/files/help.txt >> $1/config/help.txt
-                cat $PKG_install_dir/files/base >> $1/$1.sh
-=======
                 cat $PKG_install_dir/files/package_manager >> $1/config/package_manager
                 cat $PKG_install_dir/files/help.txt >> $1/config/help.txt
                 cat $PKG_install_dir/files/base >> $1/$1
->>>>>>> e605667 (...)
                 echo "Configuring files to be executable..."
                 chmod a+x $1/install/install
                 chmod a+x $1/install/uninstall
                 chmod a+x $1/install/configure
                 chmod a+x $1/config/config
-<<<<<<< HEAD
-                chmod a+x $1/$1.sh
-=======
                 chmod a+x $1/$1
->>>>>>> e605667 (...)
                 echo "Copying the pkgfile..."
             fi
         }
@@ -57,11 +43,7 @@
             has_name=$(grep -R "PKG_name" "pkgfile")
             given_name=$(source pkgfile && echo "$PKG_name")
             if [[ -z $given_name ]] || [[ -z $has_name ]] ; then
-<<<<<<< HEAD
-                echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name and dir."
-=======
                 echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name."
->>>>>>> e605667 (...)
             else
                 echo "Creating the package \"$given_name\"..."
                 pkg_build $given_name
