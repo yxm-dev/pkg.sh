@@ -1,0 +1,11 @@
+#! /bin/bash 
+
+echo "Checking for custom dependency test..."
+if [[ -x test ]]; then 
+    echo "ok..."
+else
+    echo echo "Installing custom dependency test..."
+fi
+
+dasdas
+

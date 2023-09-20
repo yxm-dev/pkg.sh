@@ -1,0 +1,6 @@
+usage: PKG_name [options] [arguments] (general case)
+   or: PKG_name                       (interactive mode)
+
+options:
+    -c, -cgf, --config                enter in the configuration mode
+    -h, --help                        display this help message

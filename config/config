@@ -1,0 +1,67 @@
+#! /bin/bash
+
+# including the pkgfile
+pkgfile_dir=$(cd ${BASH_SOURCE%/*} && cd .. && pwd)
+source $pkgfile_dir/pkgfile
+
+function PKG_init_config(){
+    echo "Initializing the configuration mode..."
+            cd $PKG_install_dir/config/ui/
+            go mod init pkg.sh
+            go mod tidy
+            echo "Done."
+            go run ui.go
+            cd -
+}
+
+which go
+if [[ ! $? -eq 0 ]]; then
+    echo "The configuration mode of \"pkg.sh\" is written in Go and Go is missing."
+    echo "You can either install Go or build the \"pkgfile\" manually."
+    while :
+    do
+        echo "Do you want to install Go?"
+        read -e -p "> " install_go
+        if [[ "$install_go" == "y" ]] || [[ "$install_go" == "yes" ]] ||
+           [[ "$install_go" == "Y" ]] || [[ "$install_go" == "YES" ]]; then
+            which apt
+            if [[ ! $? -eq 0 ]]; then
+                sudo apt-get isntall golang
+            else
+                which pacman
+                if [[ ! $? -eq 0 ]]; then
+                    sudo pacman -S go
+                else
+                    which dnf
+                    if [[ ! $? -eq 0 ]]; then
+                        sudo dnf install golang
+                    else
+                        which yum
+                        if [[ ! $? -eq 0 ]]; then
+                            sudo yum install golang
+                        else
+                            which zypper
+                            if [[ ! $? -eq 0 ]]; then
+                                sudo zypper install go
+                            else
+                                echo "A package manager was not identified. Please, install Go manually."
+                                break
+                            fi
+                        fi
+                    fi
+                fi
+            fi
+        PKG_init_config    
+        break
+        elif [[ "$install_go" == "n" ]] || [[ "$install_go" == "no" ]] ||
+             [[ "$install_go" == "N" ]] || [[ "$install_go" == "NO" ]]; then
+                echo "Aborting..."
+                break
+        fi
+        echo "Please, write \"y/yes\" or \"n/no\"."
+        continue
+    done
+else
+    PKG_init_config
+fi
+

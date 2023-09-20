@@ -1,0 +1,44 @@
+#! /bin/bash
+
+# BASICS
+## complete the string with the name of the package to be created
+## EXAMPLE: 
+##  PKG_name="my_package"
+
+    PKG_name=""
+
+# DEPENDENCIES
+## complete with the array with the name of the dependencies
+## EXAMPLE: 
+##  PKG_dependencies=(pkg_1 pkg_2)
+
+    declare -a PKG_dependencies
+    PKG_dependencies=()
+
+## complete with "yes" or "no" for each distro in which you want to configure the installation of your package.
+## OBS: leaving in blank implies in using the default configuration
+## EXAMPLE: 
+##  PKG_distro_include["Debian"]="yes"
+## ...
+
+    declare -A PKG_distro_include
+
+    PKG_distro_include["Debian"]=""
+    PKG_distro_include["Arch"]=""
+    PKG_distro_include["RedHat"]=""
+    PKG_distro_include["openSUSE"]=""
+
+## for each dependency in ${PKG_dependencies} and for each distro you marked with "yes", 
+## add the name of the package in that distro.
+## OBS: leaving in blank implies in using the name in ${PKG_dependencies} as default.
+## EXAMPLE:
+##  PKG_distro_package_name["Debian","pkg_1"]="pkg_1_Debian"
+##  PKG_distro_package_name["Debian","pkg_2"]="pkg_2_Debian"
+##  PKG_distro_package_name["Arch","pkg_1"]="pkg_1_Arch"
+##  PKG_distro_package_name["Arch","pkg_2"]="pkg_2_Arch"
+## ...
+
+    declare -A PKG_distro_package_name
+
+
+

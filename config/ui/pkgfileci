@@ -1,0 +1,11 @@
+#! /bin/bash 
+
+echo "Executing custom installation steps for the package \"$PKG_name\"..."
+
+daad
+asddad
+ada
+da
+
+
+

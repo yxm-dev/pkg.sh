@@ -1,0 +1,11 @@
+usage: pkg [options]             
+   or: pkg [argument]            run pkgfile in given filepath          
+   or: pkg                       run pkgfile in working directory
+
+options:
+    -h, --help                   display this help message
+    -c, --config, --pkgfile      enter in the configuration mode
+    -t, -tpl, --template         generate a template for a pkgfile
+
+argument:
+    path/to/pkgfile

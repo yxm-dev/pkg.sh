@@ -1,0 +1,40 @@
+#! /bin/bash
+
+# include
+    source ${BASH_SOURCE%/*}/pkgfile
+
+# MAIN FUNCTION
+    function PKG_name(){
+## without options enter in the interactive mode or print help
+        if  [[ -z "$1" ]]; then
+            if [[ -f "$PKG_install_dir/files/interactive" ]] &&
+               [[ -s "$PKG_install_dir/files/interactive" ]]; then
+                sh $PKG_install_dir/files/interactive
+            else
+                cat $PKG_install_dir/config/help.txt
+            fi
+## "-c", -"cfg" and "--config" options to enter in the configuration mode
+        elif ([[ "$1" == "-c" ]] || 
+              [[ "$1" == "-cfg" ]] || 
+              [[ "$1" == "--config" ]]) &&
+              [[ -z "$2" ]]; then
+            if [[ -f "$PKG_install_dir/config/config" ]] &&
+               [[ -s "$PKG_install_dir/config/config" ]]; then
+                sh $PKG_install_dir/config/config
+            else
+                echo "None configuration mode defined for the \"PKG_name\" function."
+            fi
+## "-h" and "--help" options to print help
+        elif ([[ "$1" == "-h" ]] || 
+              [[ "$1" == "--help" ]]) &&
+              [[ -z "$2" ]]; then
+            cat $PKG_install_dir/config/help.txt
+## "-u" and "--uninstall" options to execute the uninstall script
+        elif [[ "$1" == "-u" ]] || [[ "$1" == "--uninstall" ]]; then
+            sh  $PKG_install_dir/install/uninstall
+## (your additional code ...)
+        else 
+            echo "Option not defined for the \"PKG_name\" function."
+        fi
+    }
+   
