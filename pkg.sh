@@ -16,27 +16,28 @@
                 mkdir $1/install
                 mkdir $1/config
                 mkdir $1/files
+                mkdir $1/config/src
                 echo "Creating base files..."
                 touch $1/install/install
                 touch $1/install/uninstall
                 touch $1/install/configure
-                touch $1/config/config
-                touch $1/config/help.txt
-                touch $1/config/interactive
+                touch $1/config/src/config.sh
+                touch $1/config/src/help.txt
+                touch $1/config/src/interactive
                 touch $1/$1
                 echo "Configuring base files..."
                 cat $PKG_install_dir/files/install >> $1/install/install
                 cat $PKG_install_dir/files/uninstall >> $1/install/uninstall
                 cat $PKG_install_dir/files/configure >> $1/install/configure
-                cat $PKG_install_dir/files/config >> $1/config/config
-                cat $PKG_install_dir/files/package_manager >> $1/config/package_manager
-                cat $PKG_install_dir/files/help.txt >> $1/config/help.txt
+                cat $PKG_install_dir/files/config.sh >> $1/config/src/config.sh
+                cat $PKG_install_dir/files/package_manager >> $1/configsrc/package_manager
+                cat $PKG_install_dir/files/help.txt >> $1/config/src/help.txt
                 cat $PKG_install_dir/files/base >> $1/$1
                 echo "Configuring files to be executable..."
                 chmod a+x $1/install/install
                 chmod a+x $1/install/uninstall
                 chmod a+x $1/install/configure
-                chmod a+x $1/config/config
+                chmod a+x $1/config/src/config.sh
                 chmod a+x $1/$1
                 if [[ -f "pkgfilecd" ]]; then
                     echo "Configuring pkgfilecd file..."
@@ -46,8 +47,9 @@
                 echo "Confiruring \"$1\" file..."
                 sed -i "s/PKG_name/$1/g" $1/$1
                 echo "Configuring the help.txt file..."
-                sed -i "s/PKG_name/$1/g" $1/config/help.txt
-                echo "The application \"$1\" has been created in your working directory."
+                sed -i "s/PKG_name/$1/g" $1/config/src/help.txt
+                echo "Configuring the main file..."
+                sed -i "s/PKG_name/$1/g" $1/config/src/help.txt
             fi
         }
 ## PKG Function Properly   
@@ -56,24 +58,27 @@
             local has_name=$(grep -R "PKG_name" "pkgfile")
             local given_name=$(source pkgfile && echo "$PKG_name")
             if [[ -z $given_name ]] || [[ -z $has_name ]] ; then
-                echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name."
+                echo "error: Your \"pkgfile\" is not well constructed. Please provide at least a package name."
             else
                 echo "Creating the package \"$given_name\"..."
                 PKG_build $given_name
                 cp -r pkgfile $given_name
+                echo "The application \"$1\" has been created in your working directory."
             fi
         else
-            echo "\"pkgfile\" not found. Generate it with \"pkg --config\", or try a quick build. See \"pkg --help\"."
+            echo "error: \"pkgfile\" not found."
+            echo "Generate it in a TUI with \"pkg --config\" or build it from a template with \"pkg --template\"."
         fi
     elif [[ -f $1 ]]; then
         local has_name=$(grep -R "PKG_name" "$1")
         local given_name=$(source $1 && echo "$PKG_name")
         if [[ -z $given_name ]] || [[ -z $has_dir ]]; then
-            echo "Your \"pkgfile\" is not well constructed. Please provide at least a package name and dir."
+            echo "error: Your \"pkgfile\" is not well constructed. Please provide at least a package name and dir."
         else
             echo "Creating the package \"$given_name\"..."
             PKG_build $given_name
             cp -r $1 $given_name
+            echo "The application \"$1\" has been created in your working directory."
         fi
     elif [[ "$1" == "-t" ]] || [[ "$1" == "-tpl" ]] || 
          [[ "$1" == "--template" ]] ||
@@ -87,13 +92,13 @@
 
     elif [[ "$1" == "-c" ]] || [[ "$1" == "-cfg" ]] || [[ "$1" == "--config" ]] ||
          [[ "$1" == "-pkgfile" ]] || [[ "$1" == "--pkgfile" ]]; then
-         sh $PKG_install_dir/config/config
+         sh $PKG_install_dir/config/config.sh
          mv $PKG_install_dir/config/ui/pkgfile $PWD
          if [[ -f $PKG_install_dir/config/ui/pkgfilecd ]]; then
              mv $PKG_install_dir/config/ui/pkgfilecd $PWD
          fi
     else
-        echo "Please provide a valid path to a pkgfile."
+        echo "error: Please provide a valid path to a pkgfile."
     fi
        unset -f PKG_build
     }
