@@ -8,9 +8,9 @@
         function PKG_build(){
             echo "Creating base directories..."
             if [[ -f "$1" ]]; then
-                echo "*error:* There alrealy exists a file \"$1\". Change the package name in the pkgfile."
+                echo "error: There alrealy exists a file \"$1\". Change the package name in the pkgfile."
             elif [[ -d "$1" ]]; then
-                 echo "*error:* There alrealy exists a directory \"$1\". Change the package name in the pkgfile."
+                 echo "error: There alrealy exists a directory \"$1\". Change the package name in the pkgfile."
             else
                 mkdir $1
                 mkdir $1/install
@@ -21,18 +21,19 @@
                 touch $1/install/install
                 touch $1/install/uninstall
                 touch $1/install/configure
-                touch $1/config/src/config.sh
+                touch $1/config/src/config
                 touch $1/config/src/help.txt
                 touch $1/config/src/interactive
                 touch $1/$1
-                echo "Configuring base files..."
-                cat $PKG_install_dir/files/install >> $1/install/install
-                cat $PKG_install_dir/files/uninstall >> $1/install/uninstall
-                cat $PKG_install_dir/files/configure >> $1/install/configure
-                cat $PKG_install_dir/files/config.sh >> $1/config/src/config.sh
-                cat $PKG_install_dir/files/package_manager >> $1/configsrc/package_manager
-                cat $PKG_install_dir/files/help.txt >> $1/config/src/help.txt
-                cat $PKG_install_dir/files/base >> $1/$1
+                touch $1/.env
+                echo "Configuring the base files..."
+                cat $INSTALL_DIR/files/install >> $1/install/install
+                cat $INSTALL_DIR/files/uninstall >> $1/install/uninstall
+                cat $INSTALL_DIR/files/configure >> $1/install/configure
+                cat $INSTALL_DIR/files/config >> $1/config/src/config
+                cat $INSTALL_DIR/files/package_manager >> $1/configsrc/package_manager
+                cat $INSTALL_DIR/files/help.txt >> $1/config/src/help.txt
+                cat $INSTALL_DIR/files/base >> $1/$1
                 echo "Configuring files to be executable..."
                 chmod a+x $1/install/install
                 chmod a+x $1/install/uninstall
@@ -85,17 +86,17 @@
          [[ "$1" == "-pkg" ]] ||
          [[ "$1" == "--pkgfile" ]]; then
         echo "Copying a template for the \"pkgfile\"..."
-            cp -r $PKG_install_dir/pkgfile $PWD
+            cp -r $INSTALL_DIR/pkgfile $PWD
         echo "Done."
     elif [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-        cat $PKG_install_dir/config/help.txt
+        cat $INSTALL_DIR/config/help.txt
 
     elif [[ "$1" == "-c" ]] || [[ "$1" == "-cfg" ]] || [[ "$1" == "--config" ]] ||
          [[ "$1" == "-pkgfile" ]] || [[ "$1" == "--pkgfile" ]]; then
-         sh $PKG_install_dir/config/config.sh
-         mv $PKG_install_dir/config/ui/pkgfile $PWD
-         if [[ -f $PKG_install_dir/config/ui/pkgfilecd ]]; then
-             mv $PKG_install_dir/config/ui/pkgfilecd $PWD
+         sh $INSTALL_DIR/config/config.sh
+         mv $INSTALL_DIR/config/ui/pkgfile $PWD
+         if [[ -f $INSTALL_DIR/config/ui/pkgfilecd ]]; then
+             mv $INSTALL_DIR/config/ui/pkgfilecd $PWD
          fi
     else
         echo "error: Please provide a valid path to a pkgfile."
