@@ -3,7 +3,8 @@
 # including the pkgfile
     MAIN_DIR=$(cd ../ && pwd)
     source $MAIN_DIR/pkgfile
-    source $MAIN_DIR/config/src/package_manager
+    source $MAIN_DIR/.env
+    source $MAIN_DIR/src/pm.sh
      
 # UNINSTALL SCRIPT
     echo "Welcome to the uninstall of the package \"$PKG_name\"."

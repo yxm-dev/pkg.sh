@@ -3,7 +3,8 @@
 # including the pkgfile
     MAIN_DIR=$(cd ../ && pwd)
     source $MAIN_DIR/pkgfile
-    source $MAIN_DIR/config/src/package_manager
+    source $MAIN_DIR/.env
+    source $MAIN_DIR/src/pm.sh
 
 # auxiliary function: identifying the package manager
     function PKG_package_manager_check(){

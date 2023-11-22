@@ -5,14 +5,14 @@ MAIN_DIR=$(cd ../ && pwd)
 echo "Welcome come to the configuration step in the installation of \"pkg.sh\"."
 printf "\nWhere do you want to install it? \nThe default location is \"$HOME/.config/pkg.sh\". To set it, just hit enter.\n"
 read -r -e -p "> " INSTALL_DIR
-if [[ -z $PKG_install_dir ]]; then
+if [[ -z $INSTALL_DIR ]]; then
     INSTALL_DIR=$HOME/.config/pkg.sh
 else
     INSTALL_DIR=$INSTALL_DIR
 fi
-echo "Ok. It will be installed in \"$PKG_install_dir\"."
+echo "Ok. It will be installed in \"$INSTALL_DIR\"."
 echo "Configuring the installation..."
  
-sed -i "2i\\ \nINSTALL_DIR=${INSTALL_DIR}\n" $MAIN_DIR/pkgfile
+sed -i "2i\\ \nPKG_INSTALL=${INSTALL_DIR}\n" $MAIN_DIR/.env
 echo "Done."
 

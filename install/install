@@ -3,14 +3,14 @@
 MAIN_DIR=$(cd ../ && pwd)
 source $MAIN_DIR/.env
 
-if [[ -d "$INSTALL_DIR" ]]; then
-    echo "*error* There already exists a directory \"$INSTALL_DIR\"."
+if [[ -d "$PKG_INSTALL" ]]; then
+    echo "*error* There already exists a directory \"$PKG_INSTALL\"."
     exit 1
 else
-    echo "Copying the files from \"$MAIN_DIR\" to \"$INSTALL_DIR\"..."
-    sudo cp -r $MAIN_DIR $INSTALL_DIR
+    echo "Copying the files from \"$MAIN_DIR\" to \"$PKG_INSTALL\"..."
+    sudo cp -r $MAIN_DIR $PKG_INSTALL
 
     echo "Concluding the installation..."
-    printf "if [[ -f $INSTALL_DIR ]]; then \nsource $INSTALL_DIR \nfi\n" >> $HOME/.bashrc
+    printf "if [[ -f $PKG_INSTALL ]]; then \nsource $PKG_INSTALL \nfi\n" >> $HOME/.bashrc
 fi
 
